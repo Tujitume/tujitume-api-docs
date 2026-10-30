@@ -358,7 +358,7 @@ Deletes a document owned by the current KYC record. The `document` path paramete
 
 ## POST `/kyc/submit`
 
-Validates required flow fields, people requirements, and required documents, then changes status to `submitted`. The request body is empty.
+Validates required flow fields, people requirements, and required documents, then changes status to `submitted`. The request body is empty. A business owner account (`user_type_id` 1) must already belong to an organization; otherwise submission returns `422` with `KYC cannot be submitted without an organization.`
 
 **Example JSON body:**
 
@@ -486,3 +486,5 @@ Validation failures use Laravel's standard shape:
 3. `POST /kyc/documents` for every required document.
 4. `GET /kyc/status` to check state.
 5. `POST /kyc/submit` once complete.
+
+When an administrator verifies a submitted KYC record, the account receives a bell notification with type `kyc` and link `overview/account`. A verification email is also sent when the account has an email address. The notification is separate from the KYC endpoint response.
